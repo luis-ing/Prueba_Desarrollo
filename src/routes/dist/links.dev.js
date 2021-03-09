@@ -6,10 +6,13 @@ var router = express.Router();
 
 var pool = require('../database');
 
-router.get('/add', function (req, res) {
+var _require = require('../lib/auth'),
+    isLoggedIn = _require.isLoggedIn;
+
+router.get('/add', isLoggedIn, function (req, res) {
   res.render('links/add');
 });
-router.post('/add', function _callee(req, res) {
+router.post('/add', isLoggedIn, function _callee(req, res) {
   var _req$body, name_book, author, date_public, information, newLink;
 
   return regeneratorRuntime.async(function _callee$(_context) {
@@ -39,7 +42,7 @@ router.post('/add', function _callee(req, res) {
     }
   });
 });
-router.get('/', function _callee2(req, res) {
+router.get('/', isLoggedIn, function _callee2(req, res) {
   var links;
   return regeneratorRuntime.async(function _callee2$(_context2) {
     while (1) {
@@ -62,7 +65,7 @@ router.get('/', function _callee2(req, res) {
     }
   });
 });
-router.get('/delete/:idbooks', function _callee3(req, res) {
+router.get('/delete/:idbooks', isLoggedIn, function _callee3(req, res) {
   var idbooks;
   return regeneratorRuntime.async(function _callee3$(_context3) {
     while (1) {
@@ -83,7 +86,7 @@ router.get('/delete/:idbooks', function _callee3(req, res) {
     }
   });
 });
-router.get('/edit/:idbooks', function _callee4(req, res) {
+router.get('/edit/:idbooks', isLoggedIn, function _callee4(req, res) {
   var idbooks, links;
   return regeneratorRuntime.async(function _callee4$(_context4) {
     while (1) {
@@ -106,7 +109,7 @@ router.get('/edit/:idbooks', function _callee4(req, res) {
     }
   });
 });
-router.post('/edit/:idbooks', function _callee5(req, res) {
+router.post('/edit/:idbooks', isLoggedIn, function _callee5(req, res) {
   var idbooks, _req$body2, name_book, author, date_public, information, newLink;
 
   return regeneratorRuntime.async(function _callee5$(_context5) {

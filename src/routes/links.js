@@ -2,12 +2,13 @@ const express = require('express');
 const router = express.Router();
 
 const pool = require('../database');
+const { isLoggedIn } = require('../lib/auth')
 
-router.get('/add', (req, res) => {
+router.get('/add', isLoggedIn, (req, res) => {
     res.render('links/add');
 });
 
-router.post('/add', async (req, res) => {
+router.post('/add', isLoggedIn, async (req, res) => {
     //console.log(req.body);
     const { name_book, author, date_public, information } = req.body;
     const newLink = {
@@ -22,26 +23,26 @@ router.post('/add', async (req, res) => {
     res.redirect('/links');
 });
 
-router.get('/', async (req, res) => {
+router.get('/', isLoggedIn, async (req, res) => {
     const links = await pool.query('SELECT * FROM favorite_books');
     console.log(links);
     res.render('links/list', {links});
 });
 
-router.get('/delete/:idbooks', async (req, res) =>{
+router.get('/delete/:idbooks', isLoggedIn, async (req, res) =>{
     const { idbooks } = req.params;
     await pool.query('DELETE FROM favorite_books WHERE idbooks = ?', [idbooks]);
     req.flash('success', 'Datos eliminados correctamente');
     res.redirect('/links');
 });
 
-router.get('/edit/:idbooks', async (req, res) => {
+router.get('/edit/:idbooks', isLoggedIn, async (req, res) => {
     const { idbooks } = req.params;
     const links = await pool.query('SELECT * FROM favorite_books WHERE idbooks = ?', [idbooks]);
     res.render('links/edit', {link: links[0]});
 });
 
-router.post('/edit/:idbooks', async (req, res) => {
+router.post('/edit/:idbooks', isLoggedIn, async (req, res) => {
     const { idbooks } = req.params;
     const { name_book, author, date_public, information } = req.body;
     const newLink = {
