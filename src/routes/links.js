@@ -15,7 +15,8 @@ router.post('/add', isLoggedIn, async (req, res) => {
         name_book,
         author,
         date_public,
-        information
+        information,
+        users_idusers: req.user.idusers
     };
     //console.log(newLink);
     await pool.query('INSERT INTO favorite_books set ?', [newLink]);
@@ -24,7 +25,7 @@ router.post('/add', isLoggedIn, async (req, res) => {
 });
 
 router.get('/', isLoggedIn, async (req, res) => {
-    const links = await pool.query('SELECT * FROM favorite_books');
+    const links = await pool.query('SELECT * FROM favorite_books WHERE users_idusers = ?', [req.user.idusers]);
     console.log(links);
     res.render('links/list', {links});
 });

@@ -25,7 +25,8 @@ router.post('/add', isLoggedIn, function _callee(req, res) {
             name_book: name_book,
             author: author,
             date_public: date_public,
-            information: information
+            information: information,
+            users_idusers: req.user.idusers
           }; //console.log(newLink);
 
           _context.next = 4;
@@ -49,7 +50,7 @@ router.get('/', isLoggedIn, function _callee2(req, res) {
       switch (_context2.prev = _context2.next) {
         case 0:
           _context2.next = 2;
-          return regeneratorRuntime.awrap(pool.query('SELECT * FROM favorite_books'));
+          return regeneratorRuntime.awrap(pool.query('SELECT * FROM favorite_books WHERE users_idusers = ?', [req.user.idusers]));
 
         case 2:
           links = _context2.sent;
